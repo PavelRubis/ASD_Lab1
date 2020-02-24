@@ -1,0 +1,9 @@
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\bin\Release\Lab1.exe.config
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\bin\Release\Lab1.exe
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\bin\Release\Lab1.pdb
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.csprojAssemblyReference.cache
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.MainForm.resources
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.Properties.Resources.resources
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.csproj.GenerateResource.cache
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.exe
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.pdb
