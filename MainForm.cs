@@ -56,6 +56,15 @@ namespace Lab1
             Chart.Series.Clear();
             try
             {
+
+                //Series FuncSeries = Chart.Series.Add("Аналитическая функция");
+                //FuncSeries.ChartType = SeriesChartType.Line;
+                //FuncSeries.MarkerStyle = MarkerStyle.Star10;
+                //FuncSeries.MarkerSize = 11;
+                //FuncSeries.BorderWidth = 3;
+
+                //FuncMethod(Double.Parse(VoltageTextBox.Text), Double.Parse(ResistTextBox.Text), Double.Parse(CapacityTextBox.Text), Double.Parse(HTextBox.Text), FuncSeries);
+
                 if (ExplicitEMethodCheckBox.Checked)
                 {
                     Series ExplicitSeries = Chart.Series.Add("Явный метод Эйлера");
@@ -119,15 +128,13 @@ namespace Lab1
 
             double t = default;
             double phi = U0;
-            double u = U0;
             int n = 0;
 
             while (t < (R * C))
             {
                 plot.Points.AddXY(t, phi);
-                phi = u * (Math.Pow((1 - (h / (R * C))), n + 1));
+                phi = U0 * (Math.Pow((1 - (h / (R * C))), n + 1));
                 t += (R * C) / 20;
-                u = U0 * Math.Pow(Math.E, -t / (R * C));
                 n++;
             }
         }
@@ -140,15 +147,13 @@ namespace Lab1
 
             double t = default;
             double phi = U0;
-            double u = U0;
             int n = 0;
 
             while (t < (R * C))
             {
                 plot.Points.AddXY(t, phi);
-                phi = u / (Math.Pow((1 + (h / (R * C))),n+1));
+                phi = U0 / (Math.Pow((1 + (h / (R * C))),n+1));
                 t += (R * C) / 20;
-                u = U0 * Math.Pow(Math.E, -t / (R * C));
                 n++;
             }
         }
@@ -161,14 +166,34 @@ namespace Lab1
 
             double t = default;
             double phi = U0;
-            double u = U0;
             int n = 0;
 
             while (t < (R * C))
             {
                 plot.Points.AddXY(t, phi);
-                phi = (u * (Math.Pow((1 - (h / (R * C))), n + 1))) + (u / (Math.Pow((1 + (h / (R * C))), n + 1)));
+                phi = (U0 * (Math.Pow((1 - (h / (R * C))), n + 1))) + (U0 / (Math.Pow((1 + (h / (R * C))), n + 1)));
                 phi /= 2;
+                t += (R * C) / 20;
+                n++;
+            }
+        }
+
+
+
+        //аналитическая функция
+        public void FuncMethod(double U0, double R, double C, double h, Series plot)
+        {
+            C *= Math.Pow(10, -9);
+            h *= (R * C);
+
+            double t = default;
+            double phi = U0;
+            double u = U0;
+            int n = 0;
+
+            while (t < (R * C))
+            {
+                plot.Points.AddXY(t, u);
                 t += (R * C) / 20;
                 u = U0 * Math.Pow(Math.E, -t / (R * C));
                 n++;
@@ -255,6 +280,12 @@ namespace Lab1
                     MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            //AboutBox aboutBox = new AboutBox();
+            //aboutBox.ShowDialog();
         }
     }
 }

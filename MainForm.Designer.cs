@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.HTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.TrapezesMethodCheckBox = new System.Windows.Forms.CheckBox();
             this.ImplicitEMethodCheckBox = new System.Windows.Forms.CheckBox();
@@ -45,7 +46,6 @@
             this.VoltageTextBox = new System.Windows.Forms.TextBox();
             this.StartButton = new System.Windows.Forms.Button();
             this.Chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.HTextBox = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -54,6 +54,7 @@
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.Silver;
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.label4);
@@ -79,6 +80,15 @@
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Параметр h в долях от RC:";
+            // 
+            // HTextBox
+            // 
+            this.HTextBox.Location = new System.Drawing.Point(35, 36);
+            this.HTextBox.Name = "HTextBox";
+            this.HTextBox.Size = new System.Drawing.Size(100, 23);
+            this.HTextBox.TabIndex = 3;
+            this.HTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
+            this.HTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // groupBox1
             // 
@@ -193,12 +203,13 @@
             // 
             // StartButton
             // 
+            this.StartButton.BackColor = System.Drawing.Color.White;
             this.StartButton.Location = new System.Drawing.Point(661, 44);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(111, 23);
             this.StartButton.TabIndex = 0;
             this.StartButton.Text = "Смоделировать";
-            this.StartButton.UseVisualStyleBackColor = true;
+            this.StartButton.UseVisualStyleBackColor = false;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
             // Chart
@@ -206,12 +217,12 @@
             this.Chart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea5.AxisX.Title = "t, c";
-            chartArea5.AxisY.Title = "U, В";
-            chartArea5.Name = "Area";
-            this.Chart.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.Chart.Legends.Add(legend5);
+            chartArea1.AxisX.Title = "t, c";
+            chartArea1.AxisY.Title = "U, В";
+            chartArea1.Name = "Area";
+            this.Chart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.Chart.Legends.Add(legend1);
             this.Chart.Location = new System.Drawing.Point(0, 2);
             this.Chart.Name = "Chart";
             this.Chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
@@ -219,15 +230,6 @@
             this.Chart.TabIndex = 1;
             this.Chart.Text = "chart1";
             this.Chart.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Chart_MouseWheelZoom);
-            // 
-            // HTextBox
-            // 
-            this.HTextBox.Location = new System.Drawing.Point(35, 36);
-            this.HTextBox.Name = "HTextBox";
-            this.HTextBox.Size = new System.Drawing.Size(100, 23);
-            this.HTextBox.TabIndex = 3;
-            this.HTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
-            this.HTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // MainForm
             // 
@@ -239,7 +241,9 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Name = "MainForm";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Лаб. №1 АСП: Моделирование разрядки конденсатора через резистор. МИЭТ, 2020";
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

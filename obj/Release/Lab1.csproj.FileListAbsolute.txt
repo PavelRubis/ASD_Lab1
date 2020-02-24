@@ -7,3 +7,4 @@ C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.Properties
 C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.csproj.GenerateResource.cache
 C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.exe
 C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.pdb
+C:\Necessary\Учебнок\3 курс\Petrakov\Lab1\obj\Release\Lab1.AboutBox.resources
