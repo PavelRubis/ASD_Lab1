@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo_ekt.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,6 +95,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AboutBox.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="a_bb9d4e90.ico" />
+    <Content Include="logo_ekt.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

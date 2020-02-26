@@ -53,50 +53,109 @@ namespace Lab1
                     MessageBoxDefaultButton.Button1);
                 return;
             }
+
             Chart.Series.Clear();
+            DataViewer.Rows.Clear();
             try
             {
 
-                //Series FuncSeries = Chart.Series.Add("Аналитическая функция");
-                //FuncSeries.ChartType = SeriesChartType.Line;
-                //FuncSeries.MarkerStyle = MarkerStyle.Star10;
-                //FuncSeries.MarkerSize = 11;
-                //FuncSeries.BorderWidth = 3;
+                Series FuncSeries = Chart.Series.Add("Аналитическая функция");
+                FuncSeries.ChartType = SeriesChartType.Line;
+                FuncSeries.MarkerStyle = MarkerStyle.Star10;
+                FuncSeries.MarkerSize = 11;
+                FuncSeries.BorderWidth = 3;
+                FuncSeries.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 
-                //FuncMethod(Double.Parse(VoltageTextBox.Text), Double.Parse(ResistTextBox.Text), Double.Parse(CapacityTextBox.Text), Double.Parse(HTextBox.Text), FuncSeries);
+                Series ExplicitSeries = null;
+                Series ImplicitSeries = null;
+                Series TrapezesSeries = null;
 
                 if (ExplicitEMethodCheckBox.Checked)
                 {
-                    Series ExplicitSeries = Chart.Series.Add("Явный метод Эйлера");
+                    ExplicitSeries = Chart.Series.Add("Явный метод Эйлера");
                     ExplicitSeries.ChartType = SeriesChartType.Line;
                     ExplicitSeries.MarkerStyle = MarkerStyle.Circle;
                     ExplicitSeries.MarkerSize = 11;
                     ExplicitSeries.BorderWidth = 3;
-
-                    ExplicitEMethod(Double.Parse(VoltageTextBox.Text), Double.Parse(ResistTextBox.Text), Double.Parse(CapacityTextBox.Text), Double.Parse(HTextBox.Text), ExplicitSeries);
+                    ExplicitSeries.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                 }
 
                 if (ImplicitEMethodCheckBox.Checked)
                 {
-                    Series ImplicitSeries = Chart.Series.Add("Неявный метод Эйлера");
+                    ImplicitSeries = Chart.Series.Add("Неявный метод Эйлера");
                     ImplicitSeries.ChartType = SeriesChartType.Line;
                     ImplicitSeries.MarkerStyle = MarkerStyle.Square;
                     ImplicitSeries.MarkerSize = 11;
                     ImplicitSeries.BorderWidth = 3;
-
-                    ImplicitEMethod(Double.Parse(VoltageTextBox.Text), Double.Parse(ResistTextBox.Text), Double.Parse(CapacityTextBox.Text), Double.Parse(HTextBox.Text), ImplicitSeries);
+                    ImplicitSeries.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                 }
 
                 if (TrapezesMethodCheckBox.Checked)
                 {
-                    Series TrapezesSeries = Chart.Series.Add("Метод трапеций");
+                    TrapezesSeries = Chart.Series.Add("Метод трапеций");
                     TrapezesSeries.ChartType = SeriesChartType.Line;
                     TrapezesSeries.MarkerStyle = MarkerStyle.Diamond;
                     TrapezesSeries.MarkerSize = 11;
                     TrapezesSeries.BorderWidth = 3;
-
-                    TrapezesMethod(Double.Parse(VoltageTextBox.Text), Double.Parse(ResistTextBox.Text), Double.Parse(CapacityTextBox.Text), Double.Parse(HTextBox.Text), TrapezesSeries);
+                    TrapezesSeries.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                 }
+
+                double U0 = Double.Parse(VoltageTextBox.Text);
+                double R = Double.Parse(ResistTextBox.Text);
+                double C = Double.Parse(CapacityTextBox.Text);
+                C *= Math.Pow(10, -9);
+                double h = Double.Parse(HTextBox.Text);
+
+                double t = default;
+                int n = default;
+
+                double UFunc = default;
+                double UExplicit = default;
+                double UImplicit = default;
+                double UTrapezes = default;
+
+
+                DataViewer.Rows.Add(0, U0, U0, U0, U0);
+                FuncSeries.Points.AddXY(0, U0);
+                if (ExplicitEMethodCheckBox.Checked)
+                    ExplicitSeries.Points.AddXY(0, U0);
+
+                if (ImplicitEMethodCheckBox.Checked)
+                    ImplicitSeries.Points.AddXY(0, U0);
+
+                if (TrapezesMethodCheckBox.Checked)
+                    TrapezesSeries.Points?.AddXY(0, U0);
+
+                while (t < (R * C))
+                {
+                    t += (R * C) / 20;
+
+                    UFunc = U0 * Math.Pow(Math.E, -(t / (R * C)));
+                    FuncSeries.Points.AddXY(t, UFunc);
+
+                    if (ExplicitEMethodCheckBox.Checked)
+                    {
+                        UExplicit = ExplicitEMethod(U0, h, n);
+                        ExplicitSeries.Points.AddXY(t, UExplicit);
+                    }
+
+                    if (ImplicitEMethodCheckBox.Checked)
+                    {
+                        UImplicit = ImplicitEMethod(U0, h, n);
+                        ImplicitSeries.Points.AddXY(t, UImplicit);
+                    }
+
+                    if (TrapezesMethodCheckBox.Checked)
+                    {
+                        UTrapezes = TrapezesMethod(U0, h, n);
+                        TrapezesSeries.Points.AddXY(t, UTrapezes);
+                    }
+
+                    DataViewer.Rows.Add(t, UFunc, UExplicit, UImplicit, UTrapezes);
+
+                    n++;
+                }
+
             }
             catch (FormatException ex)
             {
@@ -121,84 +180,25 @@ namespace Lab1
         }
 
         //Явный метод Эйлера
-        public void ExplicitEMethod(double U0, double R, double C, double h, Series plot)
+        public double ExplicitEMethod(double U0, double h, int n)
         {
-            C *= Math.Pow(10, -9);
-            h *= (R * C);
-
-            double t = default;
-            double phi = U0;
-            int n = 0;
-
-            while (t < (R * C))
-            {
-                plot.Points.AddXY(t, phi);
-                phi = U0 * (Math.Pow((1 - (h / (R * C))), n + 1));
-                t += (R * C) / 20;
-                n++;
-            }
+            return U0 * (Math.Pow((1 - h), n + 1));
         }
 
         //Неявный метод Эйлера
-        public void ImplicitEMethod(double U0, double R, double C, double h, Series plot)
+        public double ImplicitEMethod(double U0, double h, int n)
         {
-            C *= Math.Pow(10, -9);
-            h *= (R * C);
-
-            double t = default;
-            double phi = U0;
-            int n = 0;
-
-            while (t < (R * C))
-            {
-                plot.Points.AddXY(t, phi);
-                phi = U0 / (Math.Pow((1 + (h / (R * C))),n+1));
-                t += (R * C) / 20;
-                n++;
-            }
+            return U0 / (Math.Pow((1 + h), n + 1));
         }
 
         //Метод трапеций
-        public void TrapezesMethod(double U0, double R, double C, double h, Series plot)
+        public double TrapezesMethod(double U0, double h, int n)
         {
-            C *= Math.Pow(10, -9);
-            h *= (R * C);
 
-            double t = default;
-            double phi = U0;
-            int n = 0;
-
-            while (t < (R * C))
-            {
-                plot.Points.AddXY(t, phi);
-                phi = (U0 * (Math.Pow((1 - (h / (R * C))), n + 1))) + (U0 / (Math.Pow((1 + (h / (R * C))), n + 1)));
-                phi /= 2;
-                t += (R * C) / 20;
-                n++;
-            }
+            double phi = (U0 * (Math.Pow((1 - h), n + 1))) + (U0 / (Math.Pow((1 + h), n + 1)));
+            return phi /= 2;
         }
 
-
-
-        //аналитическая функция
-        public void FuncMethod(double U0, double R, double C, double h, Series plot)
-        {
-            C *= Math.Pow(10, -9);
-            h *= (R * C);
-
-            double t = default;
-            double phi = U0;
-            double u = U0;
-            int n = 0;
-
-            while (t < (R * C))
-            {
-                plot.Points.AddXY(t, u);
-                t += (R * C) / 20;
-                u = U0 * Math.Pow(Math.E, -t / (R * C));
-                n++;
-            }
-        }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -284,8 +284,8 @@ namespace Lab1
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            //AboutBox aboutBox = new AboutBox();
-            //aboutBox.ShowDialog();
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog();
         }
     }
 }
