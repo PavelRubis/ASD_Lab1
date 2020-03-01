@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Configuration;
+
 
 
 namespace Lab1
@@ -97,6 +98,7 @@ namespace Lab1
                     TrapezesSeries.MarkerStyle = MarkerStyle.Diamond;
                     TrapezesSeries.MarkerSize = 11;
                     TrapezesSeries.BorderWidth = 3;
+                    TrapezesSeries.Color = System.Drawing.Color.Black;
                     TrapezesSeries.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                 }
 
@@ -126,11 +128,11 @@ namespace Lab1
                 if (TrapezesMethodCheckBox.Checked)
                     TrapezesSeries.Points?.AddXY(0, U0);
 
-                while (t < (R * C))
+                for (int i=0; i<20;i++)
                 {
-                    t += (R * C) / 20;
+                    t += h;
 
-                    UFunc = U0 * Math.Pow(Math.E, -(t / (R * C)));
+                    UFunc = U0 * Math.Pow(Math.E, -t);
                     FuncSeries.Points.AddXY(t, UFunc);
 
                     if (ExplicitEMethodCheckBox.Checked)
@@ -284,8 +286,17 @@ namespace Lab1
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            AboutBox aboutBox = new AboutBox();
-            aboutBox.ShowDialog();
+            if (Array.IndexOf(ConfigurationManager.AppSettings.AllKeys, "OpenParameter")==-1)
+            {
+                Configuration currentConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                currentConfig.AppSettings.Settings.Add("OpenParameter", "");
+                currentConfig.Save(ConfigurationSaveMode.Full);
+                ConfigurationManager.RefreshSection("appSettings");
+
+                AboutBox aboutBox = new AboutBox();
+                aboutBox.ShowDialog();
+            }
+
         }
     }
 }
